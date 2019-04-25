@@ -4,7 +4,7 @@ import pandas as pd
 
 def parse(dump_filename, dataset_filename):
     data = {'id': [], 'title': [], 'creator': [], 'date': [], 'pubName': [], 'volume': [], 'pageNum': [],
-            'citationID': [], 'cursor': []}
+            'citationID': [], 'cursor': [], 'auth_ids': []}
     with open(dump_filename, 'r', encoding='utf-8', newline='') as dumps:
         for line in dumps:
             tree = json.loads(line)
@@ -47,6 +47,10 @@ def parse(dump_filename, dataset_filename):
                         pagerange.split('-')[0]))
                 except:
                     data['pageNum'].append('unknown')
+                try:
+                    data['auth_ids'].append([auth['authid'] for auth in article['author']])
+                except:
+                    data['auth_ids'].append('unknown')
                 data['citationID'].append(article['link'][3]['@href'])
     article_dataset = pd.DataFrame(data=data)
     article_dataset.to_csv(dataset_filename)

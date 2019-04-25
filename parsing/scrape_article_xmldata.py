@@ -47,7 +47,7 @@ def scrape(dump_name, year, subject, args):
             try:
                 dump = get_page(url_next)
                 dumps.write(dump + b'\r\n')
-                time.sleep(2)
+                time.sleep(1)
             except Exception as ex:
                 print(ex)
                 break
